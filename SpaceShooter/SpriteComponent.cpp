@@ -5,9 +5,10 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
 	:Component(owner)
 	, mTexture(nullptr)
 	, mDrawOrder(drawOrder)
-	, mTextureWidth(0)
 	, mTextureHeight(0)
+	, mTextureWidth(0)
 {
+	mOwner->GetGame()->AddSpriteComponent(this);
 }
 
 SpriteComponent::~SpriteComponent()

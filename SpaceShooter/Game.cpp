@@ -1,15 +1,19 @@
-#include "Game.h"
+#include <iostream>
 #include <string>
 #include <time.h>
+#include <iostream>
+
+
+#include "Game.h"
 #include "Actor.h"
 #include "Component.h"
 #include "SpriteComponent.h"
-#include <iostream>
 #include "Ship.h"
-#include "bullet.h"
+#include "Bullet.h"
+#include "BGSpriteComponent.h"
 
-const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 768;
+ float screenWidth = 1024.0;
+ float screenHeight = 768.0;
 Uint32 previousFrameTime = 0.0f;
 
 Game::Game() {
@@ -24,15 +28,20 @@ Game::~Game() {
 
 bool Game::Initialize() {
 
-    int result = SDL_Init(SDL_INIT_VIDEO);
+    /*int result = SDL_Init(SDL_INIT_VIDEO);
+
+    if (result == NULL) {
+        printf("Could not initialize sound: %s\n", SDL_GetError());
+        return false;
+    }*/
 
     mWindow = SDL_CreateWindow(
-        "Chess game",
+        "Space Shooter",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
-        SDL_WINDOW_OPENGL
+        screenWidth,
+        screenHeight,
+        SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
 
     );
 
@@ -55,35 +64,17 @@ bool Game::Initialize() {
         return false;
     }
 
-    SDL_Texture* background = LoadTexture("assets/space-background.png");
-    SDL_Texture* ship = LoadTexture("assets/space-ship.png");
+    int ttfInit = TTF_Init();
 
-    //background
-    Actor* bgActor = new Actor(this);
-    bgActor->SetPosition({ SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2 });
-    bgActor->SetScale(1);
+    /* Initialize the TTF library */
+    if (ttfInit < 0) {
+        SDL_Log("Couldn't initialize TTF: %s\n", SDL_GetError());
+        return false;
+    }
 
-    SpriteComponent* bgSprite = new SpriteComponent(bgActor);
+    LoadGameData();
 
-    bgSprite->SetTexture(background);
-    bgSprite->SetTextureWidth(1024);
-    bgSprite->SetTextureHeight(1024);
-
-    //ship
-    Ship* shipActor = new Ship(this);
-    shipActor->SetPosition({ SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2 });
-    shipActor->SetScale(2);
-
-    SpriteComponent* shipSprite = new SpriteComponent(shipActor);
-    shipSprite->SetTexture(ship);
-
-    mActors.push_back(bgActor);
-    mActors.push_back(shipActor);
-
-    mSpriteComponents.emplace_back(bgSprite);
-    mSpriteComponents.emplace_back(shipSprite);
-
-
+    return true; 
 
 }
 
@@ -112,7 +103,17 @@ void Game::HandleInput() {
         case SDL_KEYDOWN:
             mKeyDown = true;
             break;
+
+        case SDL_WINDOWEVENT:
+            if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+                std::cout << event.window.data1 << std::endl;
+                std::cout << event.window.data2 << std::endl;
+                screenWidth = event.window.data1;
+                screenHeight = event.window.data2;
+            }
         }
+        
+
 
     }
 
@@ -144,7 +145,7 @@ void Game::UpdateGame() {
 void Game::GenerateOutput() {
 
     //set initial background color
-    SDL_SetRenderDrawColor(mRenderer, 30, 81, 123, 1);
+    SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 1);
 
     //clear renderer
     SDL_RenderClear(mRenderer);
@@ -156,6 +157,10 @@ void Game::GenerateOutput() {
     }
 
     SDL_RenderPresent(mRenderer);
+
+    SDL_GetWindowSize(mWindow, NULL, NULL);
+
+ 
 }
 
 SDL_Texture* Game::LoadTexture(const std::string& fileName)
@@ -166,6 +171,13 @@ SDL_Texture* Game::LoadTexture(const std::string& fileName)
         printf("Could not load texture: %s\n", SDL_GetError());
     }
     return texture;
+}
+
+SDL_Texture* Game::LoadEmptyTexture(int width, int height) {
+
+    SDL_Texture* emptyTexture = SDL_CreateTexture(mRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, width, height);
+
+    return emptyTexture;
 }
 
 void Game::AddActors(Actor* actor)
@@ -187,8 +199,17 @@ void Game::RemoveActor(Actor* actor)
 
 void Game::AddSpriteComponent(SpriteComponent* spriteComponent)
 {
+    int drawOrder = spriteComponent->GetDrawOrder();
+    auto iter = mSpriteComponents.begin();
 
-    mSpriteComponents.push_back(spriteComponent);
+    for (; iter != mSpriteComponents.end(); iter++) {
+        if (drawOrder < (*iter)->GetDrawOrder()) {
+            break;
+        }
+    }
+
+
+    mSpriteComponents.insert(iter, spriteComponent);
 }
 
 void Game::RemoveSpriteComponent(SpriteComponent* spriteComponent)
@@ -203,6 +224,75 @@ void Game::RemoveSpriteComponent(SpriteComponent* spriteComponent)
     }
 }
 
+void Game::LoadGameData()
+{
+    //ship
+    Ship* shipActor = new Ship(this);
+    shipActor->SetPosition({screenHeight / 2,screenWidth / 2 });
+    shipActor->SetScale(.2);
+
+    // Create actor for the background (this doesn't need a subclass)
+   /* Actor* temp = new Actor(this);
+    temp->SetPosition({ 512.0f, 384.0f });*/
+
+    //BGSpriteComponent* bg = new BGSpriteComponent(temp);
+    //bg->SetScreenSize({ 1024.0f, 768.0f });
+    //std::vector<SDL_Texture*> bgtexs = {
+    //    LoadTexture("assets/Farback01.png"),
+    //    LoadTexture("assets/Farback02.png")
+    //};
+    //bg->SetBGTextures(bgtexs);
+    //bg->SetScrollSpeed(-100.0f);
+    //// Create the closer background
+    //bg = new BGSpriteComponent(temp, 1);
+    //bg->SetScreenSize({ 1024.0f, 768.0f });
+    //bgtexs = {
+    //    LoadTexture("assets/Stars.png"),
+    //    LoadTexture("assets/Stars.png")
+    //};
+    //bg->SetBGTextures(bgtexs);
+    //bg->SetScrollSpeed(-200.0f);
+
+    //Initial Font Type
+    TTF_Font* font = TTF_OpenFont("assets/fonts/arial.ttf", 25);
+
+    //color 
+    SDL_Color color = { 178,34,34 };
+
+
+    //1up Text
+    Actor* tempScoreActor = new Actor(this);
+    tempScoreActor->SetPosition({ screenWidth / 4, 30 });
+    tempScoreActor->SetScale(2);
+
+    SpriteComponent* score = new SpriteComponent(tempScoreActor, 40);
+
+    SDL_Surface* surface = TTF_RenderText_Solid(font, "1up", color);
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(mRenderer, surface);
+
+    score->SetTexture(texture);
+
+
+    //HighScore Text
+    Actor* highScoreActor = new Actor(this);
+    highScoreActor->SetPosition({ screenWidth / 2, 30 });
+    highScoreActor->SetScale(2);
+
+    SpriteComponent* highScore = new SpriteComponent(highScoreActor, 40);
+
+    SDL_Surface* highScoreSurface = TTF_RenderText_Solid(font, "HighScore", color);
+
+    SDL_Texture* highScoreTexture = SDL_CreateTextureFromSurface(mRenderer, highScoreSurface);
+
+    highScore->SetTexture(highScoreTexture);
+
+
+    //free font resource
+    TTF_CloseFont(font);
+
+}
+
 void Game::UnloadData()
 {
     while (!mActors.empty()) {
@@ -215,5 +305,6 @@ void Game::EndGame() {
     SDL_DestroyWindow(mWindow);
     SDL_DestroyRenderer(mRenderer);
     UnloadData();
+    TTF_Quit();
     SDL_Quit();
 }

@@ -1,16 +1,19 @@
-#pragma once
 #include "Actor.h"
+#include "Bullet.h"
+
 class Ship : public Actor
 {
 public:
     Ship(Game* game);
     ~Ship();
-    void Update(float deltaTime);
+    void Update(float deltaTime) override;
     void HandleInput(const Uint8* keyboardState, bool keyDown) override;
-    void FireBullet(float deltaTime);
+    void FireBullet();
 private:
-    bool mShootBullet = false;
     std::vector<class Bullet*> mBullets;
+    Bullet* mBullet;
+    bool mShootBullet;
+    int mAmmoCount;
 };
 
 

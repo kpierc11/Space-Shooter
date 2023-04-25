@@ -8,19 +8,18 @@ class SpriteComponent : public Component
 {
 
 public:
-	//default constructor
-	SpriteComponent(class Actor* owner, int drawOrder = 10);
+	SpriteComponent(class Actor* owner, int drawOrder = 100);
 
 	~SpriteComponent();
 
 	virtual void Draw(SDL_Renderer* renderer);
 
-	//getter/setters
 	virtual void SetTexture(SDL_Texture* texture);
 	int GetTextureHeight() { return mTextureHeight; }
 	void SetTextureWidth(int width) { mTextureWidth = width; }
 	int GetTextureWidth() { return mTextureWidth; }
 	void SetTextureHeight(int height) { mTextureWidth = height; }
+	int GetDrawOrder() { return mDrawOrder; }
 
 
 

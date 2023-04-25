@@ -1,5 +1,6 @@
-#pragma
+#pragma once
 #include "Actor.h"
+
 class Bullet : public Actor
 {
 public:
@@ -7,8 +8,8 @@ public:
 	~Bullet();
 
 	void Update(float deltaTime) override;
+	void FireBullet(bool shootBullet) { mShootBullet = shootBullet; }
 
-private:
-	bool mShootBullet = false;
 	Ship* mShip;
+	bool mShootBullet;
 };

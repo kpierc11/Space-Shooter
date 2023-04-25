@@ -1,10 +1,11 @@
 #pragma once
+#include "Actor.h"
 class Component
 {
 public:
 
 	//default constructor 
-	Component(class Actor* actor, int updateOrder = 10);
+	Component(Actor* owner, int updateOrder = 10);
 
 	//destructor 
 	virtual ~Component();

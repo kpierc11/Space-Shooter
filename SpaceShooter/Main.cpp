@@ -3,10 +3,8 @@
 
 int main(int argc, char** argv) {
 
-	//Instantiate Game
 	Game game;
 
-	//Store the result of initialize game
 	bool success = game.Initialize();
 
 	if (success) {
@@ -15,6 +13,6 @@ int main(int argc, char** argv) {
 
 	game.EndGame();
 
-
+  
 	return 0;
 }

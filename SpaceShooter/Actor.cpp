@@ -6,10 +6,11 @@
 Actor::Actor(Game* game)
 	:mGame(game)
 	, mPosition()
-	, mRotation()
 	, mScale()
+	, mRotation()
 
 {
+	mGame->AddActors(this);
 }
 
 Actor::~Actor()

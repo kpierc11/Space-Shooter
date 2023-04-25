@@ -9,7 +9,7 @@ class Actor
 {
 public:
 	Actor(class Game* game);
-	~Actor();
+	virtual ~Actor();
 
 	void AddComponent(class Component* component);
 	virtual void Update(float deltaTime);
@@ -29,6 +29,9 @@ public:
 
 private:
 
+
+	class Game* mGame;
+
 	//transform data
 	Vector2 mPosition;
 
@@ -38,8 +41,6 @@ private:
 
 	//array of components
 	std::vector<class Component*> mComponents;
-
-	class Game* mGame;
 
 
 };

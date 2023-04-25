@@ -2,15 +2,16 @@
 #include "Actor.h"
 #include <iostream>
 
-Component::Component(Actor* actor, int updateOrder)
+Component::Component(Actor* owner, int updateOrder)
+	:mOwner(owner)
+	,mUpdateOrder(updateOrder)
 {
-	mOwner = actor;
-	mUpdateOrder = updateOrder;
+	mOwner->AddComponent(this);
 }
 
 Component::~Component()
 {
-	std::cout << "Component Deleted Yayyyy";
+	std::cout << "Component Deleted";
 }
 
 void Component::Update(float deltaTime)

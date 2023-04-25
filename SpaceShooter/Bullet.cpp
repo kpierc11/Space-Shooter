@@ -1,16 +1,22 @@
 #include "Bullet.h"
 #include "Ship.h"
+#include "SpriteComponent.h"
+
 
 Bullet::Bullet(Game* game, Ship* ship)
 	:Actor(game),
-	mShip(ship)
+	mShip(ship),
+	mShootBullet(false)
 {
-
+	SpriteComponent* bullet = new SpriteComponent(this,18);
+	SDL_Texture* text = this->GetGame()->LoadTexture("assets/bullet.png");
+	bullet->SetTexture(text);
+	this->SetScale(2);
 }
 
 Bullet::~Bullet()
 {
-	printf("bullet died");
+	printf("bullet died\n");
 }
 
 void Bullet::Update(float deltaTime)
@@ -19,19 +25,15 @@ void Bullet::Update(float deltaTime)
 	Vector2 bulletPosition = GetPosition();
 	float speed = 800.0f;
 
-	const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-
-	if (keyboardState[SDL_SCANCODE_SPACE]) {
-		mShootBullet = true;
+	if (!mShootBullet) {
+		SetPosition(mShip->GetPosition());
 	}
-
-	SetPosition(mShip->GetPosition());
-
-	if (mShootBullet) {
-
+	else if (mShootBullet) {
 		SetPosition({ bulletPosition.x, bulletPosition.y - speed * deltaTime });
 	}
-
+	 
 
 }
+
+
 
