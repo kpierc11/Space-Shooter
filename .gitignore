@@ -16,6 +16,11 @@
 # Mono auto generated files
 mono_crash.*
 
+# SDL2 directories to ignore
+SDL2-2.0.22/
+SDL2_ttf-2.0.15/
+SDL2_image-2.0.5/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
