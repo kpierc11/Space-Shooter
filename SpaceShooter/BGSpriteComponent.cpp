@@ -30,6 +30,7 @@ void BGSpriteComponent::Draw(SDL_Renderer* renderer)
 	for (auto& bg : mBGTextures)
 	{
 		SDL_Rect r{};
+
 		// Assume screen size dimensions
 		r.w = static_cast<int>(mScreenSize.x);
 		r.h = static_cast<int>(mScreenSize.y);

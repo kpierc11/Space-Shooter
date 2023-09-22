@@ -3,7 +3,7 @@
 #include <time.h>
 #include <iostream>
 
-
+#include "GameMath.h"
 #include "Game.h"
 #include "Actor.h"
 #include "Component.h"
@@ -12,12 +12,13 @@
 #include "Bullet.h"
 #include "BGSpriteComponent.h"
 
- float screenWidth = 1024.0;
- float screenHeight = 768.0;
+using namespace GameMath; 
+
 Uint32 previousFrameTime = 0.0f;
 
 Game::Game() {
     mGameRunning = true;
+    mWindowSize = { 1024.0,768.0 };
     mRenderer = {};
     mWindow = {};
 }
@@ -39,8 +40,8 @@ bool Game::Initialize() {
         "Space Shooter",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        screenWidth,
-        screenHeight,
+        mWindowSize.width,
+        mWindowSize.height,
         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
 
     );
@@ -71,6 +72,14 @@ bool Game::Initialize() {
         SDL_Log("Couldn't initialize TTF: %s\n", SDL_GetError());
         return false;
     }
+
+    Vector2 vector = { 5.5f, 5.5f };
+
+    Vector2 vec = { 5.0f, 5.0f };
+
+   Vector2 result = vector + vec;
+
+  std::cout << result.x << result.y << std::endl;
 
     LoadGameData();
 
@@ -108,8 +117,8 @@ void Game::HandleInput() {
             if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
                 std::cout << event.window.data1 << std::endl;
                 std::cout << event.window.data2 << std::endl;
-                screenWidth = event.window.data1;
-                screenHeight = event.window.data2;
+                mWindowSize.width = event.window.data1;
+                mWindowSize.height = event.window.data2;
             }
         }
         
@@ -224,45 +233,47 @@ void Game::RemoveSpriteComponent(SpriteComponent* spriteComponent)
     }
 }
 
+
 void Game::LoadGameData()
 {
     //ship
     Ship* shipActor = new Ship(this);
-    shipActor->SetPosition({screenHeight / 2,screenWidth / 2 });
+    shipActor->SetPosition({mWindowSize.height / 2,mWindowSize.width / 2 });
     shipActor->SetScale(.2);
 
     // Create actor for the background (this doesn't need a subclass)
-   /* Actor* temp = new Actor(this);
-    temp->SetPosition({ 512.0f, 384.0f });*/
+    Actor* temp = new Actor(this);
+    temp->SetPosition({ 512.0f, 384.0f });
 
-    //BGSpriteComponent* bg = new BGSpriteComponent(temp);
-    //bg->SetScreenSize({ 1024.0f, 768.0f });
-    //std::vector<SDL_Texture*> bgtexs = {
-    //    LoadTexture("assets/Farback01.png"),
-    //    LoadTexture("assets/Farback02.png")
-    //};
-    //bg->SetBGTextures(bgtexs);
-    //bg->SetScrollSpeed(-100.0f);
-    //// Create the closer background
-    //bg = new BGSpriteComponent(temp, 1);
-    //bg->SetScreenSize({ 1024.0f, 768.0f });
-    //bgtexs = {
-    //    LoadTexture("assets/Stars.png"),
-    //    LoadTexture("assets/Stars.png")
-    //};
-    //bg->SetBGTextures(bgtexs);
-    //bg->SetScrollSpeed(-200.0f);
+    BGSpriteComponent* bg = new BGSpriteComponent(temp);
+    bg->SetScreenSize({ 1024.0f, 768.0f });
+    std::vector<SDL_Texture*> bgtexs = {
+        LoadTexture("assets/space-bg.png"),
+        LoadTexture("assets/Farback02.png")
+    };
+    bg->SetBGTextures(bgtexs);
+    bg->SetScrollSpeed(-100.0f);
+
+    //Create the closer background
+    bg = new BGSpriteComponent(temp, 50);
+    bg->SetScreenSize({ 1024.0f, 768.0f });
+    bgtexs = {
+        LoadTexture("assets/Stars.png"),
+        LoadTexture("assets/Stars.png")
+    };
+    bg->SetBGTextures(bgtexs);
+    bg->SetScrollSpeed(-200.0f);
 
     //Initial Font Type
     TTF_Font* font = TTF_OpenFont("assets/fonts/arial.ttf", 25);
 
     //color 
-    SDL_Color color = { 178,34,34 };
+    SDL_Color color = { 255,255,255 };
 
 
     //1up Text
     Actor* tempScoreActor = new Actor(this);
-    tempScoreActor->SetPosition({ screenWidth / 4, 30 });
+    tempScoreActor->SetPosition({ mWindowSize.width / 4, 30 });
     tempScoreActor->SetScale(2);
 
     SpriteComponent* score = new SpriteComponent(tempScoreActor, 40);
@@ -276,7 +287,7 @@ void Game::LoadGameData()
 
     //HighScore Text
     Actor* highScoreActor = new Actor(this);
-    highScoreActor->SetPosition({ screenWidth / 2, 30 });
+    highScoreActor->SetPosition({ mWindowSize.width / 2, 30 });
     highScoreActor->SetScale(2);
 
     SpriteComponent* highScore = new SpriteComponent(highScoreActor, 40);

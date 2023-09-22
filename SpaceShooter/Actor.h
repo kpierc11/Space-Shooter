@@ -1,9 +1,6 @@
 #pragma once
 #include "Game.h"
-struct Vector2 {
-	float x;
-	float y;
-};
+#include "GameMath.h"
 
 class Actor
 {
@@ -15,8 +12,8 @@ public:
 	virtual void Update(float deltaTime);
 
 	//getters 
-	Vector2 GetPosition() { return mPosition; }
-	void SetPosition(const Vector2& position) { mPosition = position; }
+	GameMath::Vector2 GetPosition() { return mPosition; }
+	void SetPosition(const GameMath::Vector2& position) { mPosition = position; }
 	float GetScale() { return mScale; }
 	void SetScale(float scale) { mScale = scale; }
 	float GetRotation() { return mRotation; }
@@ -33,7 +30,7 @@ private:
 	class Game* mGame;
 
 	//transform data
-	Vector2 mPosition;
+	GameMath::Vector2 mPosition;
 
 	float mScale;
 

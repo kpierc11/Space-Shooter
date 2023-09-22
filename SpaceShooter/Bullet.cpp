@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "Ship.h"
 #include "SpriteComponent.h"
+#include "GameMath.h"
 
 
 Bullet::Bullet(Game* game, Ship* ship)
@@ -22,7 +23,7 @@ Bullet::~Bullet()
 void Bullet::Update(float deltaTime)
 {
 
-	Vector2 bulletPosition = GetPosition();
+	GameMath::Vector2 bulletPosition = GetPosition();
 	float speed = 800.0f;
 
 	if (!mShootBullet) {

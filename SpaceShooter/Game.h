@@ -2,11 +2,14 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
-
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 
+struct WindowSize {
+	float width; 
+	float height;
+};
 
 class Game
 {
@@ -29,6 +32,8 @@ public:
 
 	SDL_Texture* LoadTexture(const std::string& fileName);
 	SDL_Texture* LoadEmptyTexture(int width, int height);
+	WindowSize GetWindowSize() { return mWindowSize; };
+
 	void AddActors(class Actor* actor);
 	void RemoveActor(class Actor* actor);
 	void AddSpriteComponent(class SpriteComponent* spriteComponent);
@@ -40,6 +45,7 @@ public:
 private:
 	SDL_Window* mWindow;
 	SDL_Renderer* mRenderer;
+	WindowSize mWindowSize;
 	bool mGameRunning;
 	bool mKeyDown;
 	std::vector<class Actor*> mActors;

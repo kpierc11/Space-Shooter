@@ -3,6 +3,8 @@
 #include "Component.h"
 #include <algorithm>
 
+using namespace GameMath;
+
 Actor::Actor(Game* game)
 	:mGame(game)
 	, mPosition()

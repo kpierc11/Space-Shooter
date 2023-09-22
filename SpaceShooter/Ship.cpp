@@ -7,6 +7,7 @@ Ship::Ship(Game* game)
 	:Actor(game)
 	,mShootBullet(false)
 	,mAmmoCount(499)
+
 {
 	SpriteComponent* ship = new SpriteComponent(this, 30);
 	SDL_Texture* text = this->GetGame()->LoadTexture("assets/ship-3.png");
@@ -27,7 +28,7 @@ Ship::~Ship()
 
 void Ship::Update(float deltaTime)
 {
-	Vector2 playerPosition = GetPosition();
+	GameMath::Vector2 playerPosition = GetPosition();
 	float speed = 800.0f;
 
 	const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
@@ -57,8 +58,6 @@ void Ship::Update(float deltaTime)
 		mAmmoCount--;
 	}
 
-
-
 }
 
 void Ship::HandleInput(const Uint8* keyboardState, bool keyDown)
@@ -74,7 +73,8 @@ void Ship::HandleInput(const Uint8* keyboardState, bool keyDown)
 void Ship::FireBullet()
 {
 	std::cout << "bullet fired" << std::endl;
-	mBullets[mAmmoCount]->FireBullet(true);
+	mBullet = mBullets[mAmmoCount];
+	mBullet->FireBullet(true);
 
 }
 
