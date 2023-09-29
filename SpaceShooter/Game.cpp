@@ -11,6 +11,7 @@
 #include "Ship.h"
 #include "Bullet.h"
 #include "BGSpriteComponent.h"
+#include "Asteroid.h"
 
 using namespace GameMath; 
 
@@ -73,13 +74,7 @@ bool Game::Initialize() {
         return false;
     }
 
-    Vector2 vector = { 5.5f, 5.5f };
-
-    Vector2 vec = { 5.0f, 5.0f };
-
-   Vector2 result = vector + vec;
-
-  std::cout << result.x << result.y << std::endl;
+    srand((unsigned)time(0));
 
     LoadGameData();
 
@@ -141,8 +136,6 @@ void Game::UpdateGame() {
 
 
     while (!SDL_TICKS_PASSED(SDL_GetTicks(), previousFrameTime + 16));
-    std::cout << deltaTime << std::endl;
-
     for (auto actor : mActors)
     {
         actor->Update(deltaTime);
@@ -239,30 +232,29 @@ void Game::LoadGameData()
     //ship
     Ship* shipActor = new Ship(this);
     shipActor->SetPosition({mWindowSize.height / 2,mWindowSize.width / 2 });
-    shipActor->SetScale(.2);
+    shipActor->SetScale(2);
 
-    // Create actor for the background (this doesn't need a subclass)
+    
     Actor* temp = new Actor(this);
-    temp->SetPosition({ 512.0f, 384.0f });
-
+    temp->SetPosition(Vector2(512.0f, 384.0f));
+    // Create the "far back" background
     BGSpriteComponent* bg = new BGSpriteComponent(temp);
-    bg->SetScreenSize({ 1024.0f, 768.0f });
+    bg->SetScreenSize(Vector2(1024.0f, 768.0f));
     std::vector<SDL_Texture*> bgtexs = {
-        LoadTexture("assets/space-bg.png"),
-        LoadTexture("assets/Farback02.png")
+        LoadTexture("Assets/space-bg.png"),
+        LoadTexture("Assets/space-bg.png")
     };
     bg->SetBGTextures(bgtexs);
     bg->SetScrollSpeed(-100.0f);
 
-    //Create the closer background
-    bg = new BGSpriteComponent(temp, 50);
-    bg->SetScreenSize({ 1024.0f, 768.0f });
-    bgtexs = {
-        LoadTexture("assets/Stars.png"),
-        LoadTexture("assets/Stars.png")
-    };
-    bg->SetBGTextures(bgtexs);
-    bg->SetScrollSpeed(-200.0f);
+
+    for (int i = 0; i < 400; i++) {
+        int ranSpeed = rand() % 101;
+        ranSpeed += 170;
+        Asteroid* asteroid = new Asteroid(this);
+        asteroid->SetScale(3);
+        asteroid->SetFallSpeed(ranSpeed);
+    }
 
     //Initial Font Type
     TTF_Font* font = TTF_OpenFont("assets/fonts/arial.ttf", 25);
@@ -271,28 +263,14 @@ void Game::LoadGameData()
     SDL_Color color = { 255,255,255 };
 
 
-    //1up Text
-    Actor* tempScoreActor = new Actor(this);
-    tempScoreActor->SetPosition({ mWindowSize.width / 4, 30 });
-    tempScoreActor->SetScale(2);
-
-    SpriteComponent* score = new SpriteComponent(tempScoreActor, 40);
-
-    SDL_Surface* surface = TTF_RenderText_Solid(font, "1up", color);
-
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(mRenderer, surface);
-
-    score->SetTexture(texture);
-
-
-    //HighScore Text
+    //Score
     Actor* highScoreActor = new Actor(this);
-    highScoreActor->SetPosition({ mWindowSize.width / 2, 30 });
+    highScoreActor->SetPosition({ 100 , 30 });
     highScoreActor->SetScale(2);
 
     SpriteComponent* highScore = new SpriteComponent(highScoreActor, 40);
 
-    SDL_Surface* highScoreSurface = TTF_RenderText_Solid(font, "HighScore", color);
+    SDL_Surface* highScoreSurface = TTF_RenderText_Solid(font, "Score: ", color);
 
     SDL_Texture* highScoreTexture = SDL_CreateTextureFromSurface(mRenderer, highScoreSurface);
 

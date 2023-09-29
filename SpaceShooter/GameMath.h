@@ -21,5 +21,10 @@ namespace GameMath {
 			
 			return Vector2(x + vector.x,  y + vector.y);
 		}
+
+		Vector2 operator-(const Vector2& vector) {
+
+			return Vector2(x - vector.x, y - vector.y);
+		}
 	};
 }

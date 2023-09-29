@@ -1,24 +1,23 @@
 #include "BGSpriteComponent.h"
+#include <iostream>
 
 BGSpriteComponent::BGSpriteComponent(Actor* owner, int drawOrder)
 	:SpriteComponent(owner, drawOrder)
-	,mScreenSize({ 0.0f,0.0f })
 	,mScrollSpeed(0.0f)
 {
 }
 
 void BGSpriteComponent::Update(float deltaTime)
 {
+
 	SpriteComponent::Update(deltaTime);
 	for (auto& bg : mBGTextures)
 	{
-		// Update the x offset
-		bg.mOffset.x += mScrollSpeed * deltaTime;
-		// If this is completely off the screen, reset offset to
-		// the right of the last bg texture
-		if (bg.mOffset.x < -mScreenSize.x)
+		bg.mOffset.y -= mScrollSpeed * deltaTime;
+		
+		if (bg.mOffset.y > mScreenSize.y)
 		{
-			bg.mOffset.x = (mBGTextures.size() - 1) * mScreenSize.x - 1;
+			bg.mOffset.y = -mScreenSize.y;
 		}
 	}
 
@@ -26,6 +25,7 @@ void BGSpriteComponent::Update(float deltaTime)
 
 void BGSpriteComponent::Draw(SDL_Renderer* renderer)
 {
+	
 	// Draw each background texture
 	for (auto& bg : mBGTextures)
 	{
@@ -52,11 +52,11 @@ void BGSpriteComponent::SetBGTextures(const std::vector<SDL_Texture*>& textures)
 	int count = 0;
 	for (auto tex : textures)
 	{
-		BGTexture temp{};
+		BGTexture temp;
 		temp.mTexture = tex;
 		// Each texture is screen width in offset
-		temp.mOffset.x = count * mScreenSize.x;
-		temp.mOffset.y = 0;
+		temp.mOffset.x = 0;
+		temp.mOffset.y = count * -mScreenSize.y;
 		mBGTextures.emplace_back(temp);
 		count++;
 	}

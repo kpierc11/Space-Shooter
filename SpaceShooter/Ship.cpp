@@ -10,7 +10,7 @@ Ship::Ship(Game* game)
 
 {
 	SpriteComponent* ship = new SpriteComponent(this, 30);
-	SDL_Texture* text = this->GetGame()->LoadTexture("assets/ship-3.png");
+	SDL_Texture* text = this->GetGame()->LoadTexture("assets/ship-7.png");
 	ship->SetTexture(text);
 
 	for (int i = 0; i < 500; i++) {

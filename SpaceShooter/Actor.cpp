@@ -23,6 +23,20 @@ Actor::~Actor()
 
 void Actor::AddComponent(Component* component)
 {
+	int myOrder = component->GetUpdateOrder();
+	auto iter = mComponents.begin();
+	for (;
+		iter != mComponents.end();
+		++iter)
+	{
+		if (myOrder < (*iter)->GetUpdateOrder())
+		{
+			break;
+		}
+	}
+
+	// Inserts element before position of iterator
+	mComponents.insert(iter, component);
 }
 
 void Actor::Update(float deltaTime)
