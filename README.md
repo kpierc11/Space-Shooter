@@ -1,4 +1,4 @@
-# SpaceShooter built with SDL2
+# Work in progress space shooter game built with SDL2
 
 #Dependencies needed
 
