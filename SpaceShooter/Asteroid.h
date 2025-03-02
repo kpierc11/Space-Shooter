@@ -1,11 +1,11 @@
-#pragma once
 #include "Actor.h"
+
 class Asteroid : public Actor
 {
 public:
-	Asteroid(Game* game);
+	Asteroid(class Game* game);
 	~Asteroid();
-	void Update(float deltaTime) override;
+	void Update(float deltaTime);
 	void SetFallSpeed(float fallSpeed);
 
 

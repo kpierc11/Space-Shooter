@@ -2,6 +2,7 @@
 #include "Ship.h"
 #include "SpriteComponent.h"
 #include "GameMath.h"
+#include "Game.h"
 
 
 Bullet::Bullet(Game* game, Ship* ship)

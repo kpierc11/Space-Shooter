@@ -7,13 +7,15 @@ public:
     Ship(Game* game);
     ~Ship();
     void Update(float deltaTime) override;
-    void HandleInput(const Uint8* keyboardState, bool keyDown) override;
     void FireBullet();
+    void ReloadBullets();
+    void SetAmmoCount(int ammoCount);
 private:
-    std::vector<class Bullet*> mBullets;
+    std::vector<Bullet*> mBullets;
     Bullet* mBullet;
     bool mShootBullet;
     int mAmmoCount;
+    float mShipRotation;
 };
 
 

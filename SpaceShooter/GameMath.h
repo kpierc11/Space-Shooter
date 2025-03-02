@@ -1,6 +1,9 @@
 #pragma once
+#include<cmath>
 
 namespace GameMath {
+
+	const double PI = 2 * acos(0.0);
 
 	class Vector2 {
 	public:
@@ -27,4 +30,9 @@ namespace GameMath {
 			return Vector2(x - vector.x, y - vector.y);
 		}
 	};
+
+	inline float ToDegrees(float radians)
+	{
+		return radians * 180.0f / PI;
+	}
 }

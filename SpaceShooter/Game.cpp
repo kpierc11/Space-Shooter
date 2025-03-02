@@ -1,17 +1,14 @@
 #include <iostream>
 #include <string>
 #include <time.h>
-#include <iostream>
+#include <algorithm>
 
 #include "GameMath.h"
 #include "Game.h"
 #include "Actor.h"
 #include "Component.h"
 #include "SpriteComponent.h"
-#include "Ship.h"
-#include "Bullet.h"
-#include "BGSpriteComponent.h"
-#include "Asteroid.h"
+#include "GameLevel.h"
 
 using namespace GameMath; 
 
@@ -22,6 +19,8 @@ Game::Game() {
     mWindowSize = { 1024.0,768.0 };
     mRenderer = {};
     mWindow = {};
+    mLevel = {};
+    mKeyDown = false;
 }
 
 Game::~Game() {
@@ -76,7 +75,8 @@ bool Game::Initialize() {
 
     srand((unsigned)time(0));
 
-    LoadGameData();
+    mLevel = new GameLevel(this);
+    mLevel->InitLevel();
 
     return true; 
 
@@ -131,16 +131,17 @@ void Game::HandleInput() {
 }
 
 void Game::UpdateGame() {
-    float deltaTime = (SDL_GetTicks() - previousFrameTime) / 1000.0f;
-    previousFrameTime = SDL_GetTicks();
+    float deltaTime = (SDL_GetTicks64() - previousFrameTime) / 1000.0f;
+    previousFrameTime = SDL_GetTicks64();
 
 
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), previousFrameTime + 16));
+    while (!SDL_TICKS_PASSED(SDL_GetTicks64(), previousFrameTime + 16 ));
     for (auto actor : mActors)
     {
         actor->Update(deltaTime);
-    }
-
+    }  
+    
+    mLevel->UpdateLevel();
 
 }
 
@@ -157,6 +158,7 @@ void Game::GenerateOutput() {
     {
         sprite->Draw(mRenderer);
     }
+
 
     SDL_RenderPresent(mRenderer);
 
@@ -226,61 +228,6 @@ void Game::RemoveSpriteComponent(SpriteComponent* spriteComponent)
     }
 }
 
-
-void Game::LoadGameData()
-{
-    //ship
-    Ship* shipActor = new Ship(this);
-    shipActor->SetPosition({mWindowSize.height / 2,mWindowSize.width / 2 });
-    shipActor->SetScale(2);
-
-    
-    Actor* temp = new Actor(this);
-    temp->SetPosition(Vector2(512.0f, 384.0f));
-    // Create the "far back" background
-    BGSpriteComponent* bg = new BGSpriteComponent(temp);
-    bg->SetScreenSize(Vector2(1024.0f, 768.0f));
-    std::vector<SDL_Texture*> bgtexs = {
-        LoadTexture("Assets/space-bg.png"),
-        LoadTexture("Assets/space-bg.png")
-    };
-    bg->SetBGTextures(bgtexs);
-    bg->SetScrollSpeed(-100.0f);
-
-
-    for (int i = 0; i < 400; i++) {
-        int ranSpeed = rand() % 101;
-        ranSpeed += 170;
-        Asteroid* asteroid = new Asteroid(this);
-        asteroid->SetScale(3);
-        asteroid->SetFallSpeed(ranSpeed);
-    }
-
-    //Initial Font Type
-    TTF_Font* font = TTF_OpenFont("assets/fonts/arial.ttf", 25);
-
-    //color 
-    SDL_Color color = { 255,255,255 };
-
-
-    //Score
-    Actor* highScoreActor = new Actor(this);
-    highScoreActor->SetPosition({ 100 , 30 });
-    highScoreActor->SetScale(2);
-
-    SpriteComponent* highScore = new SpriteComponent(highScoreActor, 40);
-
-    SDL_Surface* highScoreSurface = TTF_RenderText_Solid(font, "Score: ", color);
-
-    SDL_Texture* highScoreTexture = SDL_CreateTextureFromSurface(mRenderer, highScoreSurface);
-
-    highScore->SetTexture(highScoreTexture);
-
-
-    //free font resource
-    TTF_CloseFont(font);
-
-}
 
 void Game::UnloadData()
 {

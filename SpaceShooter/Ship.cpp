@@ -2,81 +2,96 @@
 #include "Ship.h"
 #include "SpriteComponent.h"
 #include "Bullet.h"
+#include "Game.h"
 
 Ship::Ship(Game* game)
 	:Actor(game)
-	,mShootBullet(false)
-	,mAmmoCount(499)
+	, mBullets({})
+	, mBullet(NULL)
+	, mShootBullet(false)
+	, mAmmoCount(6)
+	, mShipRotation(1.0f)
 
 {
 	SpriteComponent* ship = new SpriteComponent(this, 30);
-	SDL_Texture* text = this->GetGame()->LoadTexture("assets/ship-7.png");
+	SDL_Texture* text = this->GetGame()->LoadTexture("assets/ship-6.png");
 	ship->SetTexture(text);
 
-	for (int i = 0; i < 500; i++) {
+	for (int i = 0; i < mAmmoCount + 1; i++) {
 
 		Bullet* bullet = new Bullet(this->GetGame(), this);
 		mBullets.push_back(bullet);
 	}
-
 }
 
 Ship::~Ship()
 {
-	
+
 }
 
 void Ship::Update(float deltaTime)
 {
 	GameMath::Vector2 playerPosition = GetPosition();
 	float speed = 800.0f;
-
+	Game* game = this->GetGame();
 	const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
-	if (keyboardState[SDL_SCANCODE_D] && playerPosition.x <= (1024 -32)) {
+	if (keyboardState[SDL_SCANCODE_D] && playerPosition.x <= (game->GetWindowSize().width - 32))
+	{
 
 		//move right
 		SetPosition({ playerPosition.x + speed * deltaTime, playerPosition.y });
 	}
-	else if (keyboardState[SDL_SCANCODE_A] && playerPosition.x >= 32) {
+	if (keyboardState[SDL_SCANCODE_A] && playerPosition.x >= 32)
+	{
 
 		//move left
 		SetPosition({ playerPosition.x - speed * deltaTime, playerPosition.y });
 	}
-	else if (keyboardState[SDL_SCANCODE_W] && playerPosition.y > 32) {
+	if (keyboardState[SDL_SCANCODE_W] && playerPosition.y > 32)
+	{
 
 		//move forward
 		SetPosition({ playerPosition.x , playerPosition.y - speed * deltaTime });
 	}
-	else if (keyboardState[SDL_SCANCODE_S] && playerPosition.y <= (768-32)) {
+	if (keyboardState[SDL_SCANCODE_S] && playerPosition.y <= (game->GetWindowSize().height - 32))
+	{
 
 		//move backwards
 		SetPosition({ playerPosition.x, playerPosition.y + speed * deltaTime });
 	}
-
-	if (mShootBullet) {
+	if (keyboardState[SDL_SCANCODE_SPACE])
+	{
 		FireBullet();
-		mAmmoCount--;
+		if (mAmmoCount != 0)
+		{
+			mAmmoCount--;
+		}
+		else if (mAmmoCount == 0) {
+			ReloadBullets();
+		}
+
+		std::cout << "Ammo Count: " << mAmmoCount << "\n";
 	}
 
-}
-
-void Ship::HandleInput(const Uint8* keyboardState, bool keyDown)
-{
-	if (keyboardState[SDL_SCANCODE_SPACE]) {
-		mShootBullet = true;
-	}
-	else {
-		mShootBullet = false;
-	}
 }
 
 void Ship::FireBullet()
 {
-	std::cout << "bullet fired" << std::endl;
-	mBullet = mBullets[mAmmoCount];
-	mBullet->FireBullet(true);
+	if (!mBullets.empty()) {
+		mBullets[mAmmoCount]->FireBullet(true);
+	}
+}
+
+void Ship::ReloadBullets()
+{
+
+	SetAmmoCount(6);
 
 }
 
+void Ship::SetAmmoCount(int ammoCount)
+{
+	mAmmoCount = ammoCount;
+}
 
 

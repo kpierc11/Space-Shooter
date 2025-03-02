@@ -1,6 +1,6 @@
 #pragma once
-#include "Game.h"
 #include "GameMath.h"
+#include <vector>
 
 class Actor
 {
@@ -11,14 +11,14 @@ public:
 	void AddComponent(class Component* component);
 	virtual void Update(float deltaTime);
 
-	//getters 
-	GameMath::Vector2 GetPosition() { return mPosition; }
+	GameMath::Vector2 GetPosition() const { return mPosition; }
 	void SetPosition(const GameMath::Vector2& position) { mPosition = position; }
-	float GetScale() { return mScale; }
+	float GetScale() const { return mScale; }
 	void SetScale(float scale) { mScale = scale; }
-	float GetRotation() { return mRotation; }
+	float GetRotation() const { return mRotation; }
+	void SetRotation(float rotation) { mRotation = rotation;}
 	class Game* GetGame() { return mGame; }
-	virtual void HandleInput(const Uint8* keyboardState, bool keyDown) {};
+	virtual void HandleInput(const uint8_t* keyboardState, bool keyDown) {};
 
 	void AddComponents(class Component* component);
 	void RemoveComponent(class Component* component);

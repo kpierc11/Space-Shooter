@@ -1,5 +1,6 @@
 #include "SpriteComponent.h"
 #include "Actor.h"
+#include "Game.h"
 
 SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
 	:Component(owner)
@@ -37,7 +38,7 @@ void SpriteComponent::Draw(SDL_Renderer* renderer)
 		r.x = static_cast<int>(mOwner->GetPosition().x - r.w / static_cast<float>(2));
 		r.y = static_cast<int>(mOwner->GetPosition().y - r.h / static_cast<float>(2));
 
-		SDL_RenderCopy(renderer, mTexture, NULL, &r);
+		SDL_RenderCopyEx(renderer, mTexture, NULL, &r, -GameMath::ToDegrees(mOwner->GetRotation()), NULL, SDL_FLIP_NONE);
 
 	}
 

@@ -5,7 +5,7 @@ class Component
 public:
 
 	//default constructor 
-	Component(Actor* owner, int updateOrder = 10);
+	Component(class Actor* owner, int updateOrder = 10);
 
 	//destructor 
 	virtual ~Component();
@@ -22,7 +22,6 @@ protected:
 
 	//update order of component
 	int mUpdateOrder;
-
 
 
 };

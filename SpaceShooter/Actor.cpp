@@ -18,7 +18,6 @@ Actor::Actor(Game* game)
 Actor::~Actor()
 {
 	mGame->RemoveActor(this);
-	printf("Actor Destroyed");
 }
 
 void Actor::AddComponent(Component* component)

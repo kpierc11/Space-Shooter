@@ -32,20 +32,22 @@ public:
 
 	SDL_Texture* LoadTexture(const std::string& fileName);
 	SDL_Texture* LoadEmptyTexture(int width, int height);
-	WindowSize GetWindowSize() { return mWindowSize; };
+	WindowSize GetWindowSize() const { return mWindowSize; };
+	SDL_Renderer* GetRenderer() { return mRenderer; };
 
 	void AddActors(class Actor* actor);
 	void RemoveActor(class Actor* actor);
 	void AddSpriteComponent(class SpriteComponent* spriteComponent);
 	void RemoveSpriteComponent(class SpriteComponent* spriteComponent);
-	void LoadGameData();
 	void UnloadData();
 	void EndGame();
 
+
 private:
 	SDL_Window* mWindow;
-	SDL_Renderer* mRenderer;
 	WindowSize mWindowSize;
+	SDL_Renderer* mRenderer;
+	class GameLevel* mLevel;
 	bool mGameRunning;
 	bool mKeyDown;
 	std::vector<class Actor*> mActors;

@@ -1,5 +1,6 @@
 #include "BGSpriteComponent.h"
 #include <iostream>
+#include "Game.h"
 
 BGSpriteComponent::BGSpriteComponent(Actor* owner, int drawOrder)
 	:SpriteComponent(owner, drawOrder)
@@ -21,11 +22,16 @@ void BGSpriteComponent::Update(float deltaTime)
 		}
 	}
 
+	Game* game = mOwner->GetGame();
+
+	
+	SetScreenSize(GameMath::Vector2(game->GetWindowSize().width, game->GetWindowSize().height));
+	//printf("width: %f", mScreenSize.x);
 }
 
 void BGSpriteComponent::Draw(SDL_Renderer* renderer)
 {
-	
+	printf("width: %f \n", mScreenSize.x);
 	// Draw each background texture
 	for (auto& bg : mBGTextures)
 	{
@@ -35,7 +41,7 @@ void BGSpriteComponent::Draw(SDL_Renderer* renderer)
 		r.w = static_cast<int>(mScreenSize.x);
 		r.h = static_cast<int>(mScreenSize.y);
 		// Center the rectangle around the position of the owner
-		r.x = static_cast<int>(mOwner->GetPosition().x - r.w / static_cast<float>(2) + bg.mOffset.x);
+		//r.x = static_cast<int>(mOwner->GetPosition().x - r.w / static_cast<float>(2) + bg.mOffset.x);
 		r.y = static_cast<int>(mOwner->GetPosition().y - r.h / static_cast<float>(2) + bg.mOffset.y);
 
 		// Draw this background

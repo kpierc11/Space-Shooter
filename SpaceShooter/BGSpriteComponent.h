@@ -1,6 +1,5 @@
 #include <vector>
 #include "SpriteComponent.h"
-#include "GameMath.h"
 
 class BGSpriteComponent : public SpriteComponent
 {
