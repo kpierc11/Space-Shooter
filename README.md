@@ -1,8 +1,2 @@
-# SpaceShooter built with SDL2
-
-#Dependencies needed
-
-SDL2 main library, SDL2 Image library,  SDL2 Text To Font library
-
-#Package manager like vcpkg is reccommended to install these libraries
-https://vcpkg.io/en/
+# Work in progress space shooter game built with SDL2
+![image](https://github.com/user-attachments/assets/a6d5e21e-ea0b-4600-81d2-d6b6137e662c)
