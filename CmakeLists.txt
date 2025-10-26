@@ -1,0 +1,153 @@
+cmake_minimum_required(VERSION 3.20...4.99)
+
+project(SpaceShooter VERSION 1.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include(FetchContent)
+
+# -------------------------------------------------------
+# Helper: Include a Git dependency easily
+# -------------------------------------------------------
+function(include_dependency libName gitURL gitTag)
+    FetchContent_Declare(${libName}
+        GIT_REPOSITORY ${gitURL}
+        GIT_TAG        ${gitTag}
+        GIT_SHALLOW    TRUE
+        GIT_PROGRESS   TRUE
+    )
+    FetchContent_MakeAvailable(${libName})
+endfunction()
+
+# -------------------------------------------------------
+# SDL3
+# -------------------------------------------------------
+find_package(SDL3 QUIET CONFIG)
+if(NOT SDL3_FOUND)
+    message(STATUS "Fetching SDL3 from GitHub...")
+    include_dependency(SDL3 https://github.com/libsdl-org/SDL.git release-3.2.18)
+else()
+    message(STATUS "Using locally installed SDL3")
+endif()
+
+
+# -------------------------------------------------------
+# SDL3 Image
+# -------------------------------------------------------
+set(SDLIMAGE_AVIF OFF CACHE BOOL "Do not build avif" FORCE)
+
+FetchContent_Declare(
+    SDL3_image
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
+    GIT_TAG release-3.2.4
+)
+
+FetchContent_MakeAvailable(SDL3_image)
+
+# -------------------------------------------------------
+# SDL3 TTF
+# -------------------------------------------------------
+FetchContent_Declare(
+    SDL3_ttf
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
+    GIT_TAG release-3.2.2  # or the latest stable version
+)
+
+FetchContent_MakeAvailable(SDL3_ttf)
+
+# # -------------------------------------------------------
+# # ImGui
+# # -------------------------------------------------------
+# set(IMGUI_VERSION 1.91.8)
+# FetchContent_Declare(
+#     imgui
+#     GIT_REPOSITORY https://github.com/ocornut/imgui.git
+#     GIT_TAG        v${IMGUI_VERSION}  # use docking if desired
+# )
+# FetchContent_MakeAvailable(imgui)
+
+
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+)
+
+# -------------------------------------------------------
+# Executable
+# -------------------------------------------------------
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+# target_sources(${PROJECT_NAME}
+#     PRIVATE
+#         ${SRC_FILES}
+#         ${imgui_SOURCE_DIR}/imgui.cpp
+#         ${imgui_SOURCE_DIR}/imgui_draw.cpp
+#         ${imgui_SOURCE_DIR}/imgui_tables.cpp
+#         ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+#         ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
+#         ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
+# )
+
+# -------------------------------------------------------
+# Include directories
+# -------------------------------------------------------
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${imgui_SOURCE_DIR}
+    ${imgui_SOURCE_DIR}/backends
+)
+
+# -------------------------------------------------------
+# Compiler warnings
+# -------------------------------------------------------
+if (MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /permissive- /utf-8)
+    enable_language(ASM_MASM)
+    enable_language(ASM_NASM)
+    enable_language(ASM)
+else()
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        -Wall -Wextra -Wpedantic
+        -Wconversion -Wsign-conversion
+        -Wshadow -Wold-style-cast -Wnon-virtual-dtor
+    )
+endif()
+
+# -------------------------------------------------------
+# Link Libraries
+# -------------------------------------------------------
+target_compile_definitions(${PROJECT_NAME} PRIVATE SDL_MAIN_USE_CALLBACKS)
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        SDL3::SDL3
+        SDL3_image::SDL3_image
+        SDL3_ttf::SDL3_ttf
+)
+
+# -------------------------------------------------------
+# Windows DLL copy (copy SDL3 runtime DLL to build dir)
+# -------------------------------------------------------
+if (WIN32)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+            "$<TARGET_FILE:SDL3::SDL3>"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+        VERBATIM
+    )
+endif()
+
+# -------------------------------------------------------
+# Visual Studio startup project
+# -------------------------------------------------------
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+# -------------------------------------------------------
+# Copy assets folder to build output dir
+# -------------------------------------------------------
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/assets
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
+)
