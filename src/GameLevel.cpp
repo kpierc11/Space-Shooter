@@ -36,10 +36,10 @@ void GameLevel::InitLevel() {
 	mLevelBackground->SetBGTextures(bgtexs);
 	mLevelBackground->SetScrollSpeed(-100.0f);
 
-	SDL_RenderDrawLine(mGame->GetRenderer(), 0, 0, 768, 300);
+	//SDL_RenderDrawLine(mGame->GetRenderer(), 0, 0, 768, 300);
 
 	//Initial Font Type
-	TTF_Font* font = TTF_OpenFont("assets/fonts/arial.ttf", 25);
+	//TTF_Font* font = TTF_OpenFont("assets/fonts/arial.ttf", 25);
 
 	//color 
 	SDL_Color color = { 255,255,255 };
@@ -51,15 +51,15 @@ void GameLevel::InitLevel() {
 
 	SpriteComponent* highScore = new SpriteComponent(highScoreActor,30);
 
-	SDL_Surface* highScoreSurface = TTF_RenderText_Solid(font, "Score: ", color);
+	//SDL_Surface* highScoreSurface = TTF_RenderText_Solid(font, "Score: ", color);
 
-	SDL_Texture* highScoreTexture = SDL_CreateTextureFromSurface(mGame->GetRenderer(), highScoreSurface);
+	//SDL_Texture* highScoreTexture = SDL_CreateTextureFromSurface(mGame->GetRenderer(), highScoreSurface);
 
-	highScore->SetTexture(highScoreTexture);
+	//highScore->SetTexture(highScoreTexture);
 
 
 	//free font resource
-	TTF_CloseFont(font);
+	//TTF_CloseFont(font);
 
 
 }

@@ -35,7 +35,7 @@ void BGSpriteComponent::Draw(SDL_Renderer* renderer)
 	// Draw each background texture
 	for (auto& bg : mBGTextures)
 	{
-		SDL_Rect r{};
+		SDL_FRect r{};
 
 		// Assume screen size dimensions
 		r.w = static_cast<int>(mScreenSize.x);
@@ -45,7 +45,7 @@ void BGSpriteComponent::Draw(SDL_Renderer* renderer)
 		r.y = static_cast<int>(mOwner->GetPosition().y - r.h / static_cast<float>(2) + bg.mOffset.y);
 
 		// Draw this background
-		SDL_RenderCopy(renderer,
+		SDL_RenderTexture(renderer,
 			bg.mTexture,
 			nullptr,
 			&r

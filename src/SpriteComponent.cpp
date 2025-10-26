@@ -20,7 +20,6 @@ SpriteComponent::~SpriteComponent()
 void SpriteComponent::SetTexture(SDL_Texture* texture)
 {
 	mTexture = texture;
-	SDL_QueryTexture(texture, nullptr, nullptr, &mTextureWidth, &mTextureHeight);
 }
 
 void SpriteComponent::Draw(SDL_Renderer* renderer)
@@ -28,7 +27,7 @@ void SpriteComponent::Draw(SDL_Renderer* renderer)
 
 	if (mTexture) {
 
-		SDL_Rect r = {};
+		SDL_FRect r = {};
 
 		//Scale the width/height by owner's scale
 		r.w = static_cast<int>(mTextureWidth * mOwner->GetScale());
@@ -38,7 +37,7 @@ void SpriteComponent::Draw(SDL_Renderer* renderer)
 		r.x = static_cast<int>(mOwner->GetPosition().x - r.w / static_cast<float>(2));
 		r.y = static_cast<int>(mOwner->GetPosition().y - r.h / static_cast<float>(2));
 
-		SDL_RenderCopyEx(renderer, mTexture, NULL, &r, -GameMath::ToDegrees(mOwner->GetRotation()), NULL, SDL_FLIP_NONE);
+		SDL_RenderTextureRotated(renderer, mTexture, NULL, &r, -GameMath::ToDegrees(mOwner->GetRotation()), NULL, SDL_FLIP_NONE);
 
 	}
 
