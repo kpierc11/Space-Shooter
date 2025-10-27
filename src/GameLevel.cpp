@@ -6,14 +6,14 @@
 
 using namespace GameMath;
 
-GameLevel::GameLevel(class Game* game) :mGame(game), mAsteroids({}), mLevelBackground(NULL), mLevelBackgroundActor(NULL)
+GameLevel::GameLevel(Game* game) :mGame(game), mAsteroids({}), mLevelBackground(NULL), mLevelBackgroundActor(NULL)
 {
 
 }
 
 
 GameLevel::~GameLevel() {
-	std::cout << "Game Level Destroyed" << std::endl;
+	std::cout << "Game Level Destroyed" << "\n";
 }
 
 
@@ -68,7 +68,6 @@ void GameLevel::GenerateAsteroid(float speed, float size)
 {
 	float ranSpeed = float(rand()) / float(RAND_MAX) * speed + 10;
 	float ranSize = (float(rand()) / float(RAND_MAX) * size + 1);
-	std::cout << ranSize << "\n";
 	Asteroid* asteroid = new Asteroid(mGame);
 	asteroid->SetScale(ranSize);
 	asteroid->SetFallSpeed(ranSpeed);

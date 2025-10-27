@@ -18,7 +18,7 @@ public:
 	float GetRotation() const { return mRotation; }
 	void SetRotation(float rotation) { mRotation = rotation; }
 	class Game *GetGame() { return mGame; }
-	virtual void HandleInput(const uint8_t *keyboardState, bool keyDown) {};
+	virtual void HandleInput( const bool *key_states) {};
 
 	void AddComponents(class Component *component);
 	void RemoveComponent(class Component *component);

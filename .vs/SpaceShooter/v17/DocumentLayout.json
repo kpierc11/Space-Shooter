@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Kaleb\\Documents\\GitHub\\Space-Shooter\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{45946D96-1DF3-496B-B2FF-8C53783DCC47}|SpaceShooter\\SpaceShooter.vcxproj|C:\\Users\\Kaleb\\Documents\\GitHub\\Space-Shooter\\SpaceShooter\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{45946D96-1DF3-496B-B2FF-8C53783DCC47}|SpaceShooter\\SpaceShooter.vcxproj|solutionrelative:SpaceShooter\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:3:0:{34c7837f-3b3a-449c-bdf0-bdad86cbaf4a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Main.cpp",
+              "DocumentMoniker": "C:\\Users\\Kaleb\\Documents\\GitHub\\Space-Shooter\\SpaceShooter\\Main.cpp",
+              "RelativeDocumentMoniker": "SpaceShooter\\Main.cpp",
+              "ToolTip": "C:\\Users\\Kaleb\\Documents\\GitHub\\Space-Shooter\\SpaceShooter\\Main.cpp",
+              "RelativeToolTip": "SpaceShooter\\Main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-10-27T19:41:20.943Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

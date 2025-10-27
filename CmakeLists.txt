@@ -68,14 +68,33 @@ FetchContent_MakeAvailable(SDL3_ttf)
 # FetchContent_MakeAvailable(imgui)
 
 
-file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-)
+# file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
+#     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+# )
 
 # -------------------------------------------------------
 # Executable
 # -------------------------------------------------------
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+add_executable(${PROJECT_NAME} src/main.cpp)
+
+
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        src/Actor.cpp
+        src/Asteroid.cpp
+        src/BGSpriteComponent.cpp
+        src/Bullet.cpp
+        src/CircleComponent.cpp
+        src/Component.cpp
+        src/Game.cpp
+        src/GameLevel.cpp
+        src/GameMath.cpp
+        src/Score.cpp
+        src/ScoreSpriteComponent.cpp
+        src/Ship.cpp
+        src/SpriteComponent.cpp
+    
+)
 
 # target_sources(${PROJECT_NAME}
 #     PRIVATE
@@ -132,6 +151,8 @@ if (WIN32)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND "${CMAKE_COMMAND}" -E copy_if_different
             "$<TARGET_FILE:SDL3::SDL3>"
+            "$<TARGET_FILE:SDL3_image::SDL3_image>"
+            "$<TARGET_FILE:SDL3_ttf::SDL3_ttf>"
             "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
         VERBATIM
     )

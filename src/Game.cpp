@@ -22,6 +22,7 @@ Game::Game()
     mWindow = nullptr;
     mLevel = nullptr;
     mKeyDown = false;
+    mLevel = nullptr;
 }
 
 Game::~Game()
@@ -30,13 +31,6 @@ Game::~Game()
 
 bool Game::Initialize()
 {
-
-    /*int result = SDL_Init(SDL_INIT_VIDEO);
-
-    if (result == NULL) {
-        printf("Could not initialize sound: %s\n", SDL_GetError());
-        return false;
-    }*/
 
     mWindow = SDL_CreateWindow(
         "Space Shooter",
@@ -63,15 +57,16 @@ bool Game::Initialize()
     // int ttfInit = TTF_Init();
 
     // /* Initialize the TTF library */
-    // if (ttfInit < 0) {
+    // if (ttfInit < 0)
+    // {
     //     SDL_Log("Couldn't initialize TTF: %s\n", SDL_GetError());
     //     return false;
     // }
 
     // srand((unsigned)time(0));
 
-    // mLevel = new GameLevel(this);
-    // mLevel->InitLevel();
+    mLevel = new GameLevel(this);
+    mLevel->InitLevel();
 
     return true;
 }
@@ -100,7 +95,7 @@ void Game::HandleInput()
             mGameRunning = false;
             break;
 
-        case SDL_EVENT_KEY_DOWN: // ✅ SDL3 renamed this
+        case SDL_EVENT_KEY_DOWN: 
             mKeyDown = true;
             break;
 
@@ -108,11 +103,8 @@ void Game::HandleInput()
             mKeyDown = false;
             break;
 
-        case SDL_EVENT_WINDOW_RESIZED: // ✅ Direct event type, no nested window struct now
-            std::cout << "Window resized: "
-                      << event.window.data1 << "x"
-                      << event.window.data2 << std::endl;
-
+        case SDL_EVENT_WINDOW_RESIZED: 
+           
             mWindowSize.width = event.window.data1;
             mWindowSize.height = event.window.data2;
             break;
@@ -132,7 +124,7 @@ void Game::HandleInput()
 
 void Game::UpdateGame()
 {
-   
+
     Uint64 currentTicks = SDL_GetTicks();
     float deltaTime = (currentTicks - previousFrameTime) / 1000.0f;
     previousFrameTime = currentTicks;
@@ -148,11 +140,11 @@ void Game::UpdateGame()
         actor->Update(deltaTime);
     }
 
-    // // Update level logic
-    // if (mLevel)
-    // {
-    //     mLevel->UpdateLevel();
-    // }
+    // Update level logic
+    if (mLevel)
+    {
+        mLevel->UpdateLevel();
+    }
 }
 
 void Game::GenerateOutput()
@@ -171,8 +163,6 @@ void Game::GenerateOutput()
     }
 
     SDL_RenderPresent(mRenderer);
-
-    //SDL_GetWindowSize(mWindow, NULL, NULL);
 }
 
 SDL_Texture *Game::LoadTexture(const std::string &fileName)
@@ -245,6 +235,8 @@ void Game::UnloadData()
     {
         delete mActors.back();
     }
+
+    delete mLevel;
 }
 
 void Game::EndGame()
@@ -252,6 +244,6 @@ void Game::EndGame()
     SDL_DestroyWindow(mWindow);
     SDL_DestroyRenderer(mRenderer);
     UnloadData();
-    //TTF_Quit();
+    // TTF_Quit();
     SDL_Quit();
 }

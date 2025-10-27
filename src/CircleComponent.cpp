@@ -8,6 +8,7 @@ CircleComponent::CircleComponent(Actor* owner, int drawOrder)
 {
 }
 
+
 CircleComponent::~CircleComponent()
 {
 }
