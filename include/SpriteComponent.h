@@ -15,9 +15,9 @@ public:
 
 	virtual void SetTexture(SDL_Texture* texture);
 	int GetTextureHeight() { return mTextureHeight; }
-	void SetTextureWidth(int width) { mTextureWidth = width; }
-	int GetTextureWidth() { return mTextureWidth; }
-	void SetTextureHeight(int height) { mTextureWidth = height; }
+	void SetTextureWidth(float width) { mTextureWidth = width; }
+	float GetTextureWidth() { return mTextureWidth; }
+	void SetTextureHeight(float height) { mTextureWidth = height; }
 	int GetDrawOrder() { return mDrawOrder; }
 
 
@@ -26,8 +26,8 @@ public:
 protected:
 	SDL_Texture* mTexture;
 	int mDrawOrder;
-	int mTextureHeight;
-	int mTextureWidth;
+	float mTextureHeight;
+	float mTextureWidth;
 
 };
 

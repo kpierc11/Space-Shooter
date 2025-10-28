@@ -21,7 +21,7 @@ void GameLevel::InitLevel() {
 	//ship
 	Ship* shipActor = new Ship(mGame);
 	shipActor->SetPosition({ mGame->GetWindowSize().height / 2,  mGame->GetWindowSize().width / 2 });
-	shipActor->SetScale(2);
+	shipActor->SetScale(1);
 
 	mLevelBackgroundActor = new Actor(mGame);
 	mLevelBackgroundActor->SetPosition(Vector2(512.0f, 384.0f));
@@ -30,8 +30,8 @@ void GameLevel::InitLevel() {
 	mLevelBackground = new BGSpriteComponent(mLevelBackgroundActor);
 	mLevelBackground->SetScreenSize(Vector2(1024.0f, 768.0f));
 	std::vector<SDL_Texture*> bgtexs = {
-		mGame->LoadTexture("Assets/space-bg.png"),
-		mGame->LoadTexture("Assets/space-bg.png")
+		mGame->LoadTexture("assets/space-bg-blue-nebula.png"),
+		mGame->LoadTexture("assets/space-bg-blue-nebula.png")
 	};
 	mLevelBackground->SetBGTextures(bgtexs);
 	mLevelBackground->SetScrollSpeed(-100.0f);
@@ -45,11 +45,11 @@ void GameLevel::InitLevel() {
 	SDL_Color color = { 255,255,255 };
 
 	//Score
-	Actor* highScoreActor = new Actor(mGame);
-	highScoreActor->SetPosition({ 100 , 30 });
-	highScoreActor->SetScale(2);
+	// Actor* highScoreActor = new Actor(mGame);
+	// highScoreActor->SetPosition({ 100 , 30 });
+	// highScoreActor->SetScale(2);
 
-	SpriteComponent* highScore = new SpriteComponent(highScoreActor,30);
+	//SpriteComponent* highScore = new SpriteComponent(highScoreActor,30);
 
 	//SDL_Surface* highScoreSurface = TTF_RenderText_Solid(font, "Score: ", color);
 
@@ -77,7 +77,7 @@ void GameLevel::GenerateAsteroid(float speed, float size)
 
 void GameLevel::UpdateLevel() {
 
-	/*int level = 1;
+	int level = 1;
 	if (level == 1) {
 
 		if (mAsteroids.size() <= 10) {
@@ -102,7 +102,7 @@ void GameLevel::UpdateLevel() {
 				delete asteroid;
 			}
 		}
-	}*/
+	}
 
 }
 

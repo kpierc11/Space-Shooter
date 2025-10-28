@@ -13,10 +13,9 @@ public:
     void SetAmmoCount(int ammoCount);
 private:
     std::vector<Bullet*> mBullets;
-    Bullet* mBullet;
-    bool mShootBullet;
     int mAmmoCount;
     float mShipRotation;
+    float mReloadTime;
 };
 
 

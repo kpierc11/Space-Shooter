@@ -131,7 +131,7 @@ void Game::UpdateGame()
 
     while ((SDL_GetTicks() - previousFrameTime) < 16)
     {
-        SDL_Delay(1); // Yield CPU briefly instead of busy-waiting
+        SDL_Delay(1);
     }
 
     // Update all actors
@@ -140,11 +140,11 @@ void Game::UpdateGame()
         actor->Update(deltaTime);
     }
 
-    // Update level logic
-    if (mLevel)
-    {
+    // // Update level logic
+    // if (mLevel)
+    // {
         mLevel->UpdateLevel();
-    }
+    //}
 }
 
 void Game::GenerateOutput()

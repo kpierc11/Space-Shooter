@@ -9,7 +9,7 @@ using namespace GameMath;
 Asteroid::Asteroid(Game* game):Actor(game)
 {
 	SpriteComponent* asteroidSprite = new SpriteComponent(this, 29);
-    asteroidSprite->SetTexture(game->LoadTexture("assets/meteorite.png"));
+    asteroidSprite->SetTexture(game->LoadTexture("assets/PixelSpaceRage/128px/Asteroid 01_png_processed.png"));
     int randomX = rand() % 1023;
     int randomY = rand() % 767;
     this->SetPosition(GameMath::Vector2(randomX, randomY - 768));
