@@ -66,43 +66,38 @@ void GameLevel::InitLevel() {
 
 void GameLevel::GenerateAsteroid(float speed, float size)
 {
-	float ranSpeed = float(rand()) / float(RAND_MAX) * speed + 10;
-	float ranSize = (float(rand()) / float(RAND_MAX) * size + 1);
-	Asteroid* asteroid = new Asteroid(mGame);
-	asteroid->SetScale(ranSize);
-	asteroid->SetFallSpeed(ranSpeed);
-	mAsteroids.push_back(asteroid);
+	// float ranSpeed = float(rand()) / float(RAND_MAX) * speed + 10;
+	// float ranSize = (float(rand()) / float(RAND_MAX) * size + 1);
+	// Asteroid* asteroid = new Asteroid(mGame);
+	// asteroid->SetScale(ranSize);
+	// asteroid->SetFallSpeed(ranSpeed);
+	// mAsteroids.push_back(asteroid);
 }
 
 
 void GameLevel::UpdateLevel() {
 
-	int level = 1;
-	if (level == 1) {
+	// int level = 1;
+	// if (level == 1) {
 
-		if (mAsteroids.size() <= 10) {
-			GenerateAsteroid(200.0f, 4.0f);	
-		}
-	
-		for (auto asteroid : mAsteroids) {
-			if (asteroid->GetPosition().y >= mGame->GetWindowSize().height) {
-				delete asteroid;
-			}
-		}
+	// 	if (mAsteroids.size() <= 10) {
+	// 		GenerateAsteroid(200.0f, 2.0f);	
+	// 	}
+
 		
-	}
-	else if (level == 2) {
+	// }
+	// else if (level == 2) {
 
-		if (mAsteroids.size() < 20) {
-			GenerateAsteroid(40, 3.0);
-		}
+	// 	if (mAsteroids.size() < 20) {
+	// 		GenerateAsteroid(40, 3.0);
+	// 	}
 
-		for (auto asteroid : mAsteroids) {
-			if (asteroid->GetPosition().y >= mGame->GetWindowSize().height) {
-				delete asteroid;
-			}
-		}
-	}
+	// 	for (auto asteroid : mAsteroids) {
+	// 		if (asteroid->GetPosition().y >= mGame->GetWindowSize().height) {
+	// 			delete asteroid;
+	// 		}
+	// 	}
+	// }
 
 }
 

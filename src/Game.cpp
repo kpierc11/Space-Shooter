@@ -128,12 +128,7 @@ void Game::UpdateGame()
     Uint64 currentTicks = SDL_GetTicks();
     float deltaTime = (currentTicks - previousFrameTime) / 1000.0f;
     previousFrameTime = currentTicks;
-
-    while ((SDL_GetTicks() - previousFrameTime) < 16)
-    {
-        SDL_Delay(1);
-    }
-
+    
     // Update all actors
     for (auto actor : mActors)
     {
