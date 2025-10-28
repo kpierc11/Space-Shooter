@@ -1,3 +1,4 @@
 # Work in progress space shooter game built with SDL2
-![image](https://github.com/user-attachments/assets/a6d5e21e-ea0b-4600-81d2-d6b6137e662c)
+<img width="1023" height="782" alt="image" src="https://github.com/user-attachments/assets/b5ec5289-009a-46be-b9a9-bb23e31d270e" />
+
 
